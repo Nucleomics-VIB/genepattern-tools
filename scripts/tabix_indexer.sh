@@ -8,6 +8,7 @@
 read -d '' usage <<- EOF
 Usage: tabix_indexer.sh -i <tabular.file.gz (if not compressed, a bgzip version is created)> 
 #	-p <preset (gff|bed|sam|vcf|custom>
+#   -P <full path to the bgzip executable>
 # additional fields for 'custom'
 #	-s <sequence name (1 for most file types)
 #	-b <begin-coordinate (2 for BED|GFF, 4 for SAM)>
@@ -16,7 +17,7 @@ Usage: tabix_indexer.sh -i <tabular.file.gz (if not compressed, a bgzip version 
 #	-z <start-coordinate is 0-based (default OFF for 1-based)>
 EOF
 
-while getopts "i:p:s:b:e:c:zh" opt; do
+while getopts "i:p:s:b:e:c:P:zh" opt; do
   case $opt in
     i)
       infile=${OPTARG}
@@ -39,6 +40,9 @@ while getopts "i:p:s:b:e:c:zh" opt; do
     z)
       zerob=1
       ;;
+    P)
+      exepath=${OPTARG}
+      ;;
     h)
       echo "${usage}"
       exit 0
@@ -54,7 +58,7 @@ while getopts "i:p:s:b:e:c:zh" opt; do
   esac
 done
 
-tabix="<samtools_1.5>/tabix"
+tabix="${exepath}"
 
 # check if executable runs
 $( hash "${tabix}" 2>/dev/null ) || ( echo "## ERROR! tabix executable not found in PATH"; exit 1 )
@@ -70,6 +74,13 @@ if [[ ! ${infile} = *.gz ]]; then
 echo "The input file needs first be sorted and compressed with bgzip!"
 echo "You can use the bgzip module to do so"
 exit 1
+fi
+
+# if file was uploaded, copy it to current folder
+if [[ $infile =~ "/uploads/tmp/" ]]; then
+filecp=$(basename $infile)
+cp $infile ./${filecp}
+infile="./${filecp}"
 fi
 
 # handle -0

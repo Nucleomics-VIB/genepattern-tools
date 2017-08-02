@@ -1,19 +1,26 @@
 #!/bin/bash
 
 # script sambam_view.sh
-# view [top N-lines (default to 50)] or full SAM or BAM data 
+# view [top N-lines (default to 50)] or full SAM or BAM data
+# query user-defined region
 #
 # Stephane Plaisance (VIB-NC) 2017/07/29; v1.0
 
-usage="Usage: sambam_view.sh -i <SAM¬BAM.file>
- -t <only first N lines (default to 50; 0 for full data)>
- -h <include header>
- -H <show only header>"
+read -d '' usage <<- EOF
+Usage: sambam_view.sh -i <SAM|BAM.file>
+#   -q <query region>
+#   -t <only first N lines (default to 50; 0 for full data)>
+#   -h <include header>
+#   -H <show only header>
+EOF
 
-while getopts "i:t:h:H:" opt; do
+while getopts "i:x:q:t:o:h:H:P:" opt; do
   case $opt in
     i)
       infile=${OPTARG}
+      ;;
+    x)
+      index=${OPTARG}
       ;;
     h)
       showheader=${OPTARG}
@@ -21,8 +28,17 @@ while getopts "i:t:h:H:" opt; do
     H)
       headeronly=${OPTARG}
       ;;  
+    q)
+      query=${OPTARG}
+      ;;
     t)
       topn=${OPTARG}
+      ;;
+    o)
+      optargs=${OPTARG}
+      ;;
+    P)
+      exepath=${OPTARG}
       ;;
     \?)
       echo ${usage}
@@ -36,7 +52,7 @@ while getopts "i:t:h:H:" opt; do
 done
 
 # path to executable
-samtools="<samtools_1.5>/samtools"
+samtools="${exepath}"
 
 # check if executable runs
 $( hash "${samtools}" 2>/dev/null ) || ( echo "## ERROR! samtools executable not found in PATH"; exit 1 )
@@ -46,6 +62,19 @@ if [ -z "${infile}" ]; then
 echo "# no input provided!"
 echo "${usage}"
 exit 1
+fi
+
+# if file was uploaded, copy it to current folder
+if [[ $infile =~ "/uploads/tmp/" ]]; then
+filecp=$(basename $infile)
+cp $infile ./${filecp}
+infile="./${filecp}"
+fi
+
+# add tabix index if present
+if [ -n "${index}" ] && [[ ${index} =~ "/uploads/tmp/" ]]; then
+indexcp=$(basename ${index})
+cp $index ./${indexcp}
 fi
 
 # show header?
@@ -62,7 +91,7 @@ fi
 top=${topn:-50}
 
 if [ ${top} == 0 ]; then
-${samtools} view ${header} ${infile}
+${samtools} view ${header} ${optargs} ${infile} ${query} 
 else
-${samtools} view ${header} ${infile} | head -${top}
+${samtools} view ${header} ${optargs} ${infile} ${query} | head -${top}
 fi

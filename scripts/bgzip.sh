@@ -5,11 +5,14 @@
 #
 # Stephane Plaisance (VIB-NC) 2017/07/29; v1.0
 
-usage="Usage: bgzip.sh -i <tabular.file>
+read -d '' usage <<- EOF
+Usage: bgzip.sh -i <tabular.file>
 # -f <sorting filter (default to chr, start, end)>
-# -c <comment character (default to #)"
+# -c <comment character (default to #)
+# -P <full path to the bgzip executable>
+EOF
 
-while getopts "i:f:c:h" opt; do
+while getopts "i:f:c:P:h" opt; do
   case $opt in
     i)
       infile=${OPTARG}
@@ -23,7 +26,10 @@ while getopts "i:f:c:h" opt; do
     h)
       echo ${usage}
       exit 0
-      ;;      
+      ;;
+    P)
+      exepath=${OPTARG}
+      ;;
     \?)
       echo ${usage}
       exit 1
@@ -35,7 +41,7 @@ while getopts "i:f:c:h" opt; do
   esac
 done
 
-bgzip="<samtools_1.5>/bgzip"
+bgzip="${exepath}"
 
 # check if executable runs
 $( hash "${bgzip}" 2>/dev/null ) || ( echo "## ERROR! bgzip executable not found in PATH"; exit 1 )
@@ -45,6 +51,13 @@ if [ -z "${infile}" ]; then
 echo "# no input provided!"
 echo "${usage}"
 exit 1
+fi
+
+# if file was uploaded, copy it to current folder
+if [[ $infile =~ "/uploads/tmp/" ]]; then
+filecp=$(basename $infile)
+cp $infile ./${filecp}
+infile="./${filecp}"
 fi
 
 # default filter to BED standard

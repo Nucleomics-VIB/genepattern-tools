@@ -14,7 +14,7 @@ Usage: sort_tabular.sh -i <input.file>
 # -k <keep header (default remove #-lines)>
 EOF
 
-while getopts "i:f:c:kh" opt; do
+while getopts "i:f:c:k:P:h" opt; do
   case $opt in
     i)
       infile=${OPTARG}
@@ -26,7 +26,10 @@ while getopts "i:f:c:kh" opt; do
       comment=${OPTARG}
       ;;
     k)
-      keepheader="Yes"
+      keepheader=${OPTARG}
+      ;;
+    P)
+      exepath=${OPTARG}
       ;;
     h)
       echo "${usage}"
@@ -43,6 +46,11 @@ while getopts "i:f:c:kh" opt; do
   esac
 done
 
+bgzip="${exepath}"
+
+# check if executable runs
+$( hash "${bgzip}" 2>/dev/null ) || ( echo "## ERROR! bgzip executable not found in PATH"; exit 1 )
+
 # test if minimal arguments were provided
 if [ -z "${infile}" ]
 then
@@ -51,14 +59,32 @@ then
    exit 1
 fi
 
+# if file was uploaded, copy it to current folder
+if [[ $infile =~ "/uploads/tmp/" ]]; then
+filecp=$(basename $infile)
+cp $infile ./${filecp}
+infile="./${filecp}"
+fi
+
 # comment char
 comment_char="${comment:-"#"}"
 
 # filter string or default
 filter=${filterstring:-"-k 1V,1 -k 2n,2 -k 3n,3"}
 
-if [ -n "${keepheader}" ]; then
+# test if input is compressed
+if [[ ${infile} = *.gz ]]; then
+# compressed
+if [[ ${keepheader} = "Yes" ]]; then
+( zgrep ^["${comment_char}"] ${infile}; zgrep ^[^"${comment_char}"] ${infile} | sort ${filter} ) | ${bgzip} -c
+else
+zgrep ^[^"${comment_char}"] ${infile} | sort ${filter} | ${bgzip} -c
+fi
+else
+# not compressed
+if [[ ${keepheader} = "Yes" ]]; then
 grep ^["${comment_char}"] ${infile}; grep ^[^"${comment_char}"] ${infile} | sort ${filter}
 else
 grep ^[^"${comment_char}"] ${infile} | sort ${filter}
+fi
 fi

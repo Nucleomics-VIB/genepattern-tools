@@ -5,9 +5,14 @@
 #
 # Stephane Plaisance (VIB-NC) 2017/07/29; v1.0
 
-usage="Usage: tabix_search.sh -i <tabular.file.gz> -q <query interval (chr:start-end)>"
+read -d '' usage <<- EOF
+Usage: tabix_search.sh -i <tabular.file.gz> 
+#   -q <query interval (chr:start-end)>
+#   -t <tabix index>
+#   -P <full path to the bgzip executable>
+EOF
 
-while getopts "i:q:h" opt; do
+while getopts "i:q:t:P:h" opt; do
   case $opt in
     i)
       infile=${OPTARG}
@@ -15,10 +20,16 @@ while getopts "i:q:h" opt; do
     q)
       query=${OPTARG}
       ;;
+    t)
+      index=${OPTARG}
+      ;;
     h)
       echo ${usage}
       exit 0
       ;;      
+    P)
+      exepath=${OPTARG}
+      ;;
     \?)
       echo ${usage}
       exit 1
@@ -30,7 +41,7 @@ while getopts "i:q:h" opt; do
   esac
 done
 
-tabix="<samtools_1.5>/tabix"
+tabix="${exepath}"
 
 # check if executable runs
 $( hash "${tabix}" 2>/dev/null ) || ( echo "## ERROR! tabix executable not found in PATH"; exit 1 )
@@ -45,6 +56,19 @@ fi
 if [[ ! ${infile} = *.gz ]]; then
 echo "Error: input file should be compressed with bgzip!"
 exit 1
+fi
+
+# if file was uploaded, copy it to current folder
+if [[ $infile =~ "/uploads/tmp/" ]]; then
+filecp=$(basename ${infile})
+cp $infile ./${filecp}
+infile="./${filecp}"
+fi
+
+# add tabix index if present
+if [ -n "${index}" ] && [[ ${index} =~ "/uploads/tmp/" ]]; then
+indexcp=$(basename ${index})
+cp $index ./${indexcp}
 fi
 
 if [ -z "${infile}.tbi" ]; then
