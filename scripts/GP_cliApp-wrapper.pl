@@ -24,11 +24,12 @@ if($options{input} eq "")
     exit(1);
 }
 
-#copy input file to current directory if not already there
+# define output name
 $ext = ($options{input} =~ m/([^.]+)$/)[0];
 # create output file name and add same extension as input
 $tempfile = "./".$options{output}.".".$ext;
 
+#copy input file to current directory if not already there
 unless(-e $tempfile){
 copy($options{input}, $tempfile) or die "Copy failed: $!";
 }

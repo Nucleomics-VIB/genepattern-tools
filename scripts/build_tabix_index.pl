@@ -19,8 +19,20 @@ GetOptions (\%options,	"libdir=s",
 						"commentc=s",
 						"skip=i",
 						"zerob=i",
-						"force"
+						"force=i"
 										);
+
+# tabix Indexing Options:
+#    -0, --zero-based           coordinates are zero-based
+#    -b, --begin INT            column number for region start [4]
+#    -c, --comment CHAR         skip comment lines starting with CHAR [null]
+#    -C, --csi                  generate CSI index for VCF (default is TBI)
+#    -e, --end INT              column number for region end (if no end, set INT to -b) [5]
+#    -f, --force                overwrite existing index without asking
+#    -m, --min-shift INT        set minimal interval size for CSI indices to 2^INT [14]
+#    -p, --preset STR           gff, bed, sam, vcf
+#    -s, --sequence INT         column number for sequence names (suppressed by -p) [1]
+#    -S, --skip-lines INT       skip first INT lines [0]
 
 # define executable with path
 $tabix_exec=$options{samtoolsDir}."/tabix";
@@ -32,7 +44,7 @@ if($options{input} eq "")
 }
 
 #copy input file to current directory if not already there
-$tempfile = "./".$options{input};
+$tempfile = "./".(basename($options{input}));
 
 unless(-e $tempfile){
 copy($options{input}, $tempfile) or die "Copy failed: $!";
@@ -44,14 +56,11 @@ $input_file = $tempfile;
 $cmd = $tabix_exec ;
 
 # add more depending on inputs
-if (defined($options{preset})) {
-	# check if valid
-	( map { /$options{preset}/ } ['bed', 'gff', 'sam', 'vcf'] ) ||
-		print STDERR "preset can be of [bed,gff,sam,vcf]"; exit(1);
+if ( map { /$options{preset}/ } qw('bed', 'gff', 'sam', 'vcf') ) {
 	$cmd .= " -p ".$options{preset};
 } else {
-	# build not-preset run
-
+	# build not-preset run => preset='null'
+	
 	# start is zero-based?
 	if ($options{zerob} == 1) {
 		$cmd .= " -0";
@@ -59,7 +68,7 @@ if (defined($options{preset})) {
 
 	# comment character was specified?
 	if (defined $options{commentc}){
-		$cmd .= " -c \"".$options{commentc}."\"";
+		$cmd .= " -c \'".$options{commentc}."\'";
 	}
 
 	# skip first N lines of input?
@@ -68,11 +77,11 @@ if (defined($options{preset})) {
 	}
 
 	# custom run require at least $namec & $startc
-	(defined($options{namec}) && defined($options{startc})) ||
-		print STDERR "-namec and -startc must be provided"; exit(1);
+	( defined($options{namec}) && defined($options{startc}) ) ||
+		die "\nAt least -namec and -startc must be defined";
 
 	# build custom run
-	$cmd .= "-s ".$options{namec}." -b ".$options{startc};
+	$cmd .= " -s ".$options{namec}." -b ".$options{startc};
 
 	# endc also provided
 	if (defined($options{endc})){
@@ -81,7 +90,7 @@ if (defined($options{preset})) {
 }
 
 # force mode?
-if (defined($options{force})){
+if ($options{force}==1){
 	$cmd .= " -f ";
 }
 
