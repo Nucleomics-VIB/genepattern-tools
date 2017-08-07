@@ -18,7 +18,7 @@ GetOptions (\%options,	"libdir=s",
 						"endc=i",
 						"commentc=s",
 						"skip=i",
-						"zerob",
+						"zerob=i",
 						"force"
 										);
 
@@ -53,7 +53,7 @@ if (defined($options{preset})) {
 	# build not-preset run
 
 	# start is zero-based?
-	if (defined $options{zerob}) {
+	if ($options{zerob} == 1) {
 		$cmd .= " -0";
 	}
 
