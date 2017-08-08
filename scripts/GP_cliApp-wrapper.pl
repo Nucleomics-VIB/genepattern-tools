@@ -37,7 +37,7 @@ copy($options{input}, $tempfile) or die "Copy failed: $!";
 $input_file = $tempfile;
 
 #Execute progName and capture stderr.
-$cmd = "${prog_exec} ${input_file}";
+$cmd = "${prog_exec} ${input_file} > ";
 
 print "\nCommand: $cmd\n";
 runCmd($cmd);
