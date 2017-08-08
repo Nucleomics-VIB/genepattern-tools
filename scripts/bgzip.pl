@@ -34,7 +34,6 @@ GetOptions (\%options,	"libdir=s",
 #    -@, --threads INT       number of compression threads to use [1]
 
 # requires a working copy of grep and GNU sort (supporting natural sort order V)
-# requires tabix for creating the index
 
 # define executable with path
 $bgzip_exec=$options{samtoolsDir}."/bgzip";
