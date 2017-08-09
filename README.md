@@ -16,16 +16,13 @@ They were made to perform tasks not possible using the GenePattern GUI. They oft
 
 ### **example**
 
-The script **[example.pl](example.pl)** .
-```bash
-
-```
+The script **[GP_cliApp-wrapper.pl](scripts/GP_cliApp-wrapper.pl)** is derived from GenePattern provided wrappers and offers basic functionalities needed to create a perl wrapper with IO and error control. You can use it as start point to develop standard wrappers of your own.
 
 ## **modules**
 
 You will find in that folder the zip archives of our modules that can be imported in your GP instance. Some module include a wrapper script (see comments above) while others rely solely on the GUI and on dependencies installed on the server.
 
-### **example**
+### **module Info**
 
 The module **[Picard.2.template.v1.0.zip](modules/Picard.2.template.v1.0.zip)** can be cloned and used as ba  sis for various Picard modules. It includes basic options and validation arguments often combined to picard commands.
 
