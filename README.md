@@ -8,11 +8,9 @@
 
 Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/ngs-tools/wiki)** for examples and workflows.
 
-NB: <i>Specific features used in our code depend on teh presence of executables or system resources that may be absent on your server.</i>
-
 ## **scripts**
 
-They were made to perform tasks not possible using the GenePattern GUI. They often depend on installed applications which you will need to make available on your own server.
+They were made to perform tasks not possible using the GenePattern GUI. <i>Specific features used in our code depend on the presence of executables or system resources that may be absent on your server.</i>
 
 ### **example**
 
@@ -20,7 +18,7 @@ The script **[GP_cliApp-wrapper.pl](scripts/GP_cliApp-wrapper.pl)** is derived f
 
 ## **modules**
 
-You will find in that folder the zip archives of our modules that can be imported in your GP instance. Some module include a wrapper script (see comments above) while others rely solely on the GUI and on dependencies installed on the server.
+You will find in that folder the zip archives of our modules that can be imported in your GP instance. Some module include a wrapper script (see comments above) while others rely solely on the GUI and on dependencies (to be!) installed on the server.
 
 ### **module Info**
 
