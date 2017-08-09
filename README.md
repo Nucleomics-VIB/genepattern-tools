@@ -26,7 +26,6 @@ The module **[Picard.2.template.v1.0.zip](https://github.com/Nucleomics-VIB/gene
 
 The module **[Picard.2.CollectMultipleMetrics.v0.4.2.zip](https://github.com/Nucleomics-VIB/genepattern-tools/blob/master/modules/Picard.2.CollectMultipleMetrics.v0.4.2.zip?raw=true)** performs multiple QC checks on a sorted SAM or BAM file (thanks to Peter Carr fromt eh GP support team for his help setting this up).
 
-
 <hr>
 
 <h4>Please send comments and feedback to <a href="mailto:nucleomics.bioinformatics@vib.be">nucleomics.bioinformatics@vib.be</a></h4>
