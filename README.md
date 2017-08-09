@@ -8,12 +8,27 @@
 
 Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/ngs-tools/wiki)** for examples and workflows.
 
+NB: <i>Specific features used in our code depend on teh presence of executables or system resources that may be absent on your server.</i>
+
+## **scripts**
+
+They were made to perform tasks not possible using the GenePattern GUI. They often depend on installed applications which you will need to make available on your own server.
+
 ### **example**
 
 The script **[example.pl](example.pl)** .
 ```bash
 
 ```
+
+## **modules**
+
+You will find in that folder the zip archives of our modules that can be imported in your GP instance. Some module include a wrapper script (see comments above) while others rely solely on the GUI and on dependencies installed on the server.
+
+### **example**
+
+The module **[Picard.2.template.v1.0.zip](modules/Picard.2.template.v1.0.zip)** can be cloned and used as ba  sis for various Picard modules. It includes basic options and validation arguments often combined to picard commands.
+
 
 <hr>
 
