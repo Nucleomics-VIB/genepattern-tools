@@ -24,6 +24,8 @@ You will find in that folder the zip archives of our modules that can be importe
 
 The module **[Picard.2.template.v1.0.zip](https://github.com/Nucleomics-VIB/genepattern-tools/blob/master/modules/Picard.2.template.v1.0.zip?raw=true)** can be cloned and used as ba  sis for various Picard modules. It includes basic options and validation arguments often combined to picard commands.
 
+The module **[Picard.2.CollectMultipleMetrics.v0.4.2.zip](https://github.com/Nucleomics-VIB/genepattern-tools/blob/master/modules/Picard.2.CollectMultipleMetrics.v0.4.2.zip?raw=true)** performs multiple QC checks on a sorted SAM or BAM file (thanks to Peter Carr fromt eh GP support team for his help setting this up).
+
 
 <hr>
 
