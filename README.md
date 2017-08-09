@@ -6,7 +6,7 @@
 
 *All tools presented below have only been tested by me and may contain bugs, please let me know if you find some.
 
-Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/ngs-tools/wiki)** for examples and workflows.
+Please refer to the accompanying **[wiki](https://github.com/Nucleomics-VIB/genepattern-tools/wiki)** for examples and workflows.
 
 ## **scripts**
 
