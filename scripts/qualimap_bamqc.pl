@@ -89,7 +89,7 @@ if($options{bam} eq "")
 #copy input file to current directory if not already there
 $tempfile = "./".(basename($options{bam}));
 unless(-e $tempfile){
-copy($options{bam}, $tempfile) or die "BAM copy failed: $!";
+	copy($options{bam}, $tempfile) or die "BAM copy failed: $!";
 }
 $bam_file = $tempfile;
 
@@ -110,9 +110,9 @@ $ntval="-nt ".(defined($options{nt})?$options{nt}:8);
 $nwval="-nw ".(defined($options{nw})?$options{nw}:400);
 $ocval=defined($options{oc})?"-oc $options{oc}":"";
 $osval=defined($options{os})?"-os ":"";
-$outdirval=defined($options{outdir})?$options{outdir}:$options{libdir};
-$outfileval="qualimap-report_".(basename($tempfile .bam));
-$outformatval=defined($options{outformat})?$options{outformat}:"HTML";
+$outdirval=defined($options{outdir})?"-outdir ".$options{outdir}:"-outdir ".$options{libdir};
+$outfileval="-outfile qualimap-report_".(basename($bam_file, ".bam"));
+$outformatval=defined($options{outformat})?"-outformat ".$options{outformat}:"-outformat HTML";
 $pval=defined($options{p})?"-p ".$options{p}:"-p non-strand-specific";
 
 # skipping duplicates mapped reads?
