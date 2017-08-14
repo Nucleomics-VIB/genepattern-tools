@@ -38,3 +38,6 @@ if [ -d "${gphome}/${folder}" ]; then
 echo "# content of ${gphome}/${folder}"
 ls -lah "${gphome}/${folder}"
 fi
+echo
+echo "# content of ${gphome}/resources/custom.properties"
+cat ${gphome}/resources/custom.properties
