@@ -98,27 +98,28 @@ if (defined($options{gff})){
 	unless(-e $gfffile){
 	copy($options{gff}, $gfffile) or die "GFF copy failed: $!";
 	}
-	$gffval = "-gff ".$gfffile;
+	$gffval = " -gff ".$gfffile;
 } else {
 	$gffval = "";	
 }
 
 # defaults
-$hmval="-hm ".(defined($options{hm})?$options{hm}:3);
-$nrval="-nr ".(defined($options{nr})?$options{nr}:1000);
-$ntval="-nt ".(defined($options{nt})?$options{nt}:8);
-$nwval="-nw ".(defined($options{nw})?$options{nw}:400);
-$ocval=defined($options{oc})?"-oc $options{oc}":"";
-$osval=defined($options{os})?"-os ":"";
-$outdirval=defined($options{outdir})?"-outdir ".$options{outdir}:"-outdir ".$options{libdir};
-$outfileval="-outfile qualimap-report_".(basename($bam_file, ".bam"));
-$outformatval=defined($options{outformat})?"-outformat ".$options{outformat}:"-outformat HTML";
-$pval=defined($options{p})?"-p ".$options{p}:"-p non-strand-specific";
+$hmval=" -hm ".(defined($options{hm})?$options{hm}:3);
+$ipval=defined($options{ip})?" -ip ":"";
+$nrval=" -nr ".(defined($options{nr})?$options{nr}:1000);
+$ntval=" -nt ".(defined($options{nt})?$options{nt}:8);
+$nwval=" -nw ".(defined($options{nw})?$options{nw}:400);
+$ocval=defined($options{oc})?" -oc $options{oc}":"";
+$osval=defined($options{os})?" -os ":"";
+$outdirval=defined($options{outdir})?" -outdir ".$options{outdir}:" -outdir ".$options{libdir};
+$outfileval=" -outfile qualimap-report_".(basename($bam_file, ".bam"));
+$outformatval=defined($options{outformat})?" -outformat ".$options{outformat}:" -outformat HTML";
+$pval=defined($options{p})?" -p ".$options{p}:" -p non-strand-specific";
 
 # skipping duplicates mapped reads?
-$sdval=defined($options{sd})?"-sd ":"";
+$sdval=defined($options{sd})?" -sd ":"";
 if (defined $option{sd}) {
-	$sdmodeval="-sdmode ".(defined($options{sdmode})?$options{sdmode}:0);
+	$sdmodeval=" -sdmode ".(defined($options{sdmode})?$options{sdmode}:0);
 } else {
 	$sdmodeval="";
 }
@@ -126,7 +127,7 @@ if (defined $option{sd}) {
 # use presets for HUMAN and MOUSE
 if (defined $option{sd}) {
 	if ( map { /$options{gd}/ } qw('HUMAN', 'MOUSE') ) {
-		$gdval="-gd ".$options{gd};
+		$gdval=" -gd ".$options{gd};
 	} else {
 		die "invalid value for -gd (HUMAN OR MOUSE): $!";
 	}
@@ -135,8 +136,8 @@ if (defined $option{sd}) {
 }
 
 # build qualimap command
-$cmd = $qualimap_exec." -bam ".$bam_file.$gffval;
-$cmd .= $hmval.$nrval.$ntval.$nwval;
+$cmd = $qualimap_exec." bamqc "." -bam ".$bam_file.$gffval;
+$cmd .= $hmval.$ipval.$nrval.$ntval.$nwval;
 $cmd .= $ocval.$osval;
 $cmd .= $outdirval.$outfileval.$outformatval;
 $cmd .= $pval.$sdval.$sdmodeval;
