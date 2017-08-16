@@ -119,14 +119,15 @@ $pval=defined($options{p})?" -p ".$options{p}:" -p non-strand-specific";
 # skipping duplicates mapped reads?
 if (defined $options{sd}) {
 	$sdval=" -sd ";
-	$sdmodeval=" --skip-dup-mode ".(defined($options{sm})?$options{sm}:0);
+	$sdmodeval=" -sdmode ".(defined($options{sm})?$options{sm}:0);
+	#$sdmodeval=" --skip-dup-mode ".(defined($options{sm})?$options{sm}:0);
 } else {
 	$sdval="";
 	$sdmodeval="";
 }
 
 # use presets for HUMAN and MOUSE
-if (defined $options{gd}) {
+if (defined $options{gd} && $options{gd} ne '""') {
 	$gdval=" -gd ".$options{gd};
 } else {
 	$gdval="";
