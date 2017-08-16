@@ -120,7 +120,6 @@ $pval=defined($options{p})?" -p ".$options{p}:" -p non-strand-specific";
 if (defined $options{sd}) {
 	$sdval=" -sd ";
 	$sdmodeval=" -sdmode ".(defined($options{sm})?$options{sm}:0);
-	#$sdmodeval=" --skip-dup-mode ".(defined($options{sm})?$options{sm}:0);
 } else {
 	$sdval="";
 	$sdmodeval="";
