@@ -12,22 +12,22 @@ use File::Copy;
 GetOptions (\%options,	"libdir=s",
 						"progDir=s",
 						"bam=s",
-						"c=i",
+						"c",
 						"gd=s",
 						"gff=s",
 						"hm=i",
-						"ip=i",
+						"ip",
 						"nr=i",
 						"nt=i",
 						"nw=i",
 						"oc=s",
-						"os=i",
+						"os",
 						"outdir=s",
 						"outfile=s",
 						"outformat=s",
 						"p=s",
-						"sd=i",
-						"sdmode=i"
+						"sd",
+						"sm=i"
 										);
 
 # usage: qualimap bamqc -bam <arg> [-c] [-gd <arg>] [-gff <arg>] 
@@ -78,7 +78,7 @@ GetOptions (\%options,	"libdir=s",
 #                                   2 : both flagged and estimated
 
 # define executable with path
-$qualimap_exec=$options{progDir}."/qualimap";
+$qualimap_exec=$options{progDir}."/qualimap bamqc";
 
 if($options{bam} eq "")
 {
@@ -104,12 +104,12 @@ if (defined($options{gff})){
 }
 
 # defaults
+$cval=defined($options{c})?" -c ":"";
 $hmval=" -hm ".(defined($options{hm})?$options{hm}:3);
 $ipval=defined($options{ip})?" -ip ":"";
 $nrval=" -nr ".(defined($options{nr})?$options{nr}:1000);
 $ntval=" -nt ".(defined($options{nt})?$options{nt}:8);
 $nwval=" -nw ".(defined($options{nw})?$options{nw}:400);
-$ocval=defined($options{oc})?" -oc $options{oc}":"";
 $osval=defined($options{os})?" -os ":"";
 $outdirval=defined($options{outdir})?" -outdir ".$options{outdir}:" -outdir ".$options{libdir};
 $outfileval=" -outfile qualimap-report_".(basename($bam_file, ".bam"));
@@ -117,27 +117,30 @@ $outformatval=defined($options{outformat})?" -outformat ".$options{outformat}:" 
 $pval=defined($options{p})?" -p ".$options{p}:" -p non-strand-specific";
 
 # skipping duplicates mapped reads?
-$sdval=defined($options{sd})?" -sd ":"";
-if (defined $option{sd}) {
-	$sdmodeval=" -sdmode ".(defined($options{sdmode})?$options{sdmode}:0);
+if (defined $options{sd}) {
+	$sdval=" -sd ";
+	$sdmodeval=" --skip-dup-mode ".(defined($options{sm})?$options{sm}:0);
 } else {
+	$sdval="";
 	$sdmodeval="";
 }
 
 # use presets for HUMAN and MOUSE
-if (defined $option{sd}) {
-	if ( map { /$options{gd}/ } qw('HUMAN', 'MOUSE') ) {
-		$gdval=" -gd ".$options{gd};
-	} else {
-		die "invalid value for -gd (HUMAN OR MOUSE): $!";
-	}
+if (defined $options{gd}) {
+	$gdval=" -gd ".$options{gd};
 } else {
 	$gdval="";
 }
 
+if (defined $options{oc}) {
+	$ocval=" -oc ".$options{oc}.".txt";
+} else {
+	$ocval="";
+}
+
 # build qualimap command
-$cmd = $qualimap_exec." bamqc "." -bam ".$bam_file.$gffval;
-$cmd .= $hmval.$ipval.$nrval.$ntval.$nwval;
+$cmd = $qualimap_exec." -bam ".$bam_file.$gffval;
+$cmd .= $cval.$hmval.$ipval.$nrval.$ntval.$nwval;
 $cmd .= $ocval.$osval;
 $cmd .= $outdirval.$outfileval.$outformatval;
 $cmd .= $pval.$sdval.$sdmodeval;
