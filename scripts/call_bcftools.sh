@@ -4,6 +4,7 @@
 # use samtools, bcftools, vcftools, and varscan to call variants
 #
 # Stephane Plaisance (VIB-NC) 2017/07/29; v1.0
+# piping directly without saving .bcf. 2017/09/26; v1.1
 
 # redirect terminal outputs to file
 exec >run_logfile.txt 2>&1
@@ -116,12 +117,11 @@ thr=${compthr:-4}
 prefix=$(basename ${infile})
 
 read -d '' cmd << EOF
-((${samtools} mpileup -uf ${reference} ${infile} | \
-	${bcftools} call --threads ${thr} ${ploidyval} -vc -O u > ./${prefix}.raw.bcf) && \
-(bcftools view ./${prefix}.raw.bcf | \
+${samtools} mpileup -uf ${reference} ${infile} | \
+	${bcftools} call --threads ${thr} ${ploidyval} -vc -O u | \
+	bcftools view - | \
 	${vcfutils} varFilter -D${maxdepth} > \
-	./${prefix}_var_bcftools.flt-D${maxdepth}.vcf)) && \
-	rm ./${prefix}.raw.bcf
+	./${prefix}_var_bcftools.flt-D${maxdepth}.vcf
 EOF
 
 echo "# ${cmd}"
