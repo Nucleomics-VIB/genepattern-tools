@@ -1,0 +1,13 @@
+[
+{       name: "Main Parameters",
+  parameters: [ "bam.file", "gff.file", "outfile" ,
+  "genome-gc-distr", "paint.chr.limits"],
+      hidden: false
+},
+{       name: "Additional Parameters",
+  parameters: [ "outformat", "homo.polymers", "include.overlapping.paired",
+  "non.zero.coverage", "report.outside.gff", "library.type", 
+  "skip.duplicates", "duplicate.skip"  ],
+      hidden: true
+},
+]
