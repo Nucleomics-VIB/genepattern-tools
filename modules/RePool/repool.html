@@ -1,0 +1,62 @@
+<!DOCTYPE meta PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.or
+g/TR/html4/loose.dtd">
+<html>
+<head>
+<title>
+GenePattern - NucleomicsCore RePool documentation
+</title>
+<style type="text/css"><!--
+  h1 {text-align: center}
+  span.terminal {font-family: Courier}
+--></style>
+</head>
+
+<body>
+<h1>RePool</h1>
+<h2>Summary</h2>
+The RePool utility computes the sample volumes that you have to take to make a new pool that complements a previous one, in order to get a desired read distribution for both pools combined. It takes as input and writes as output an Excel file. Below you can download an Excel template. See documentation for more information about the Excel columns.
+
+<h2>Description</h2>
+See section <a href="#input">input</a> for how to format the input file.
+<p>
+RePool excludes samples that had already so many reads that they do not have to be rerun.
+
+<h2>Parameters</h2>
+<table border><tr>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Allowed values</th>
+  <th>Default</th>
+</tr><tr>
+  <td>Excel file</td>
+  <td>You can use this <a href="http://10.112.84.39/templates/Inputfile_repooling.xlsx">template file</a>.</td>
+  <td>valid file<br><b>(is required)</b></td>
+  <td></td>
+</tr></table>
+
+<h2 id="input">Input files</h2>
+RePool takes as input an Excel file with the following columns :
+<ul>
+<li>SAMPLE : Samples names, one per row.
+<li>DESIRED.PERCENTAGE.RUN1.RUN2 : The final percentage of reads that you want to end up with for each sample, after combination of both pools. The values of this column should add to 100. If not, the values are rescaled by the script so that the sum adds to 100.
+<li>RUN1.VOLUME : The volume of each sample that was used to make the previous pool.
+<li>RUN1.BS.PERCENTAGE :  The percentage of reads for each sample after sequencing the previous pool. Note that you have to calculate percentage by taking into account all lanes.
+<li>TOTAL.VOLUME.POOL1 : The total volume of the first pool.
+<li>pM.POOL1 : The amount of pM that was loaded when sequencing the first pool.
+<li>pM.POOL2 : The amount of pM that you intend to load when sequencing this new pool.
+</ul>
+
+<h2>Author</h2>
+This module is made by Guy Bottu, VIB BioinformaticsCore &amp; NucleomicsCore, using R code made by Wouter Van Delm, VIB NucleomicsCore.
+
+<h2>Version Comments</h2>
+<table>
+<tr><th>Version</th><th>Release date</th><th>Description</th><tr>
+<tr><td>1</td><td>2017-06-20</td><td></td></tr>
+<tr><td>1.1</td><td>2017-09-04</td><td>changed how to deal with desired percentages when they do not add to 100</td></tr>
+<tr><td>2</td><td>2018-03-12</td><td>works simply with input/output file rather than reading/writing in project</td></tr>
+</table>
+
+</body>
+</html>
+

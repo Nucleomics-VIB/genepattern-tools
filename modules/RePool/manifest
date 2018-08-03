@@ -1,0 +1,32 @@
+#RePool
+#Thu Nov 30 09:27:48 CET 2017
+JVMLevel=
+LSID=urn\:lsid\:8080.u0106811.gbw-s-nuc03.luna.kuleuven.be.gbw-s-nuc03\:genepatternmodules\:65006\:2
+author=Guy Bottu;VIB NucleomicsCore
+categories=NucleomicsCore lab utilities
+commandLine=<R3.2_Rscript> <libdir>repool.R <Excel.file>
+cpuType=any
+description=The RePool utility computes how much Tris buffer must be added to samples in order to perform a second DNA sequencing run with about equal amounts of DNA. It takes as input and writes as output an Excel file.
+fileFormat=xls;xlsx
+language=R
+name=RePool
+os=any
+p1_MODE=IN
+p1_TYPE=FILE
+p1_default_value=
+p1_description=You can use this <a href\="http\://10.112.84.39/templates/Inputfile_repooling.xlsx">template file</a>.
+p1_fileFormat=xls;xlsx
+p1_flag=
+p1_name=Excel.file
+p1_numValues=1..1
+p1_optional=
+p1_prefix=
+p1_prefix_when_specified=
+p1_type=java.io.File
+p1_value=
+privacy=public
+quality=production
+taskDoc=repool.html
+taskType=NucleomicsCore lab utilities
+userid=admin
+version=
