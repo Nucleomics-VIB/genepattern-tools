@@ -2,6 +2,8 @@
 ![gplogo2](gplogo2.png) - GenePattern-Tools
 ==========
 
+<b>IMPORTANT NOTE: This is not a Broad Institute repository ! Please refer to the Broad pages for official GenePattern information.</b>
+
 ©GenePattern is a product of the [Broad Institute](http://software.broadinstitute.org/cancer/software/genepattern)
 
 *All tools presented below have only been tested by me and may contain bugs, please let me know if you find some.
